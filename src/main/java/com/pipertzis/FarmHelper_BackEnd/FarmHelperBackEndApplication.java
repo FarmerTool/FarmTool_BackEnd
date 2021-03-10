@@ -11,5 +11,5 @@ public class FarmHelperBackEndApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FarmHelperBackEndApplication.class, args);
 	}
-	
+
 }
