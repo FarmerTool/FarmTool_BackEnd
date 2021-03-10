@@ -1,6 +1,7 @@
 package com.pipertzis.FarmHelper_BackEnd.Models;
 
 import javax.persistence.*;
+import java.util.Locale;
 import java.util.UUID;
 
 @Entity
@@ -34,11 +35,11 @@ public class Fruit {
     }
 
     public String getFruitName() {
-        return fruitName;
+        return fruitName.toLowerCase(Locale.ROOT);
     }
 
     public void setFruitName(String fruitName) {
-        this.fruitName = fruitName;
+        this.fruitName = fruitName.toLowerCase(Locale.ROOT);
     }
 
     public User getUser() {
