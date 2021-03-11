@@ -4,6 +4,7 @@ import com.pipertzis.FarmHelper_BackEnd.Models.Fruit;
 import com.pipertzis.FarmHelper_BackEnd.Repositories.FruitRepository;
 import com.pipertzis.FarmHelper_BackEnd.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,7 +70,7 @@ public class FruitController {
         return fruitRepository.findById(fruitId)
                 .map(fruit -> {
                     fruitRepository.delete(fruit);
-                    return ResponseEntity.ok().build();
+                    return new ResponseEntity<String>("Fruit " + fruit.getFruitName() + " deleted succesfully", HttpStatus.OK);
                 }).orElseThrow(() -> new Exception("Something went wrong"));
     }
 
