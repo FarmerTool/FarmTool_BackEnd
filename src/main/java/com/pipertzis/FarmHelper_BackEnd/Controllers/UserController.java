@@ -14,43 +14,48 @@ import java.util.UUID;
 
 @RestController
 public class UserController {
+
     @Autowired
     private UserRepository userRepository;
 
     @GetMapping("/user/all")
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @PostMapping("/user/add")
-    public User addUser(@Valid @RequestBody User user){
+    public User addUser(@Valid @RequestBody User user) {
         return userRepository.save(user);
     }
 
     @PutMapping("/user/edit/{userId}")
-    public User editUser(@PathVariable UUID userId,@Valid @RequestBody User userRequest) throws Exception{
+    public User editUser(@PathVariable UUID userId, @Valid @RequestBody User userRequest) throws Exception {
         return userRepository.findById(userId)
-                .map (user -> {
+                .map(user -> {
                     user.setEmail(userRequest.getEmail());
                     user.setName(userRequest.getName());
                     user.setPassword(userRequest.getPassword());
                     user.setPhoneNumber(userRequest.getPhoneNumber());
                     user.setSurname(userRequest.getSurname());
                     return userRepository.save(user);
-                }).orElseThrow(()->new Exception("Something went wrong"));
-
+                }).orElseThrow(() -> new Exception("Something went wrong"));
     }
 
     @DeleteMapping("user/delete/{userId}")
     public ResponseEntity<?> deleteUserByUserId(@PathVariable UUID userId) throws Exception {
-        if(!userRepository.existsById(userId)){
-            throw new Exception("User with this " + userId + " user ID doesn't exist");
+        if (!userRepository.existsById(userId)) {
+            return new ResponseEntity<>("User with this " + userId + " User ID does not exist",HttpStatus.BAD_REQUEST);
         }
-        return userRepository.findById(userId)
-                .map( user -> {
+
+        User userVal = userRepository.findById(userId)
+                .map(user -> {
                     userRepository.deleteById(userId);
-                    return new ResponseEntity<String>("User " + user.getName() + " Deleted",HttpStatus.OK);
+                    return user;
                 }).orElseThrow(() -> new Exception("Couldn't delete the User"));
+        if(!userVal.getUserId().toString().isEmpty()){
+            return new ResponseEntity<>("User " + userVal + " deleted successfully",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Something went wrong", HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -9,12 +9,12 @@ import java.util.UUID;
 public class Fruit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "FruitId")
+    @Column(name = "fruit_id")
     private UUID fruitId;
-    @Column(name = "fruitName")
+    @Column(nullable = false,name = "fruit_name")
     private String fruitName;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    @JoinColumn(nullable = false,name = "user_id", referencedColumnName = "user_id")
     private User user;
 
     public Fruit() {
