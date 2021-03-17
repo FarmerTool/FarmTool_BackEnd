@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class FarmHelperBackEndApplication {
 
+	//TODO: Test the whole project
 	public static void main(String[] args) {
 		SpringApplication.run(FarmHelperBackEndApplication.class, args);
 	}
