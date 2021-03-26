@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -35,10 +37,10 @@ public class FruitController {
     public Fruit addFruitByUserId(@PathVariable UUID userId,
                                   @Valid @RequestBody Fruit fruitRequest) throws Exception {
         if (!userRepository.existsById(userId)) {
-            throw new Exception("User with this " + userId + " not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         if (fruitRepository.existsFruitByFruitNameAndUser_userId(fruitRequest.getFruitName(), userId)) {
-            throw new Exception("You already have the same fruit ");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         return userRepository.findById(userId)
                 .map(user -> {
@@ -50,7 +52,7 @@ public class FruitController {
     @PutMapping("/fruits/edit/{fruitId}")
     public Fruit editFruitByFruitId(@PathVariable UUID fruitId, @Valid @RequestBody Fruit fruitRequest) throws Exception {
         if (fruitRepository.existsFruitByFruitName(fruitRequest.getFruitName())) {
-            throw new Exception("You already have the same fruit ");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         return fruitRepository.findById(fruitId)
                 .map(fruit -> {
