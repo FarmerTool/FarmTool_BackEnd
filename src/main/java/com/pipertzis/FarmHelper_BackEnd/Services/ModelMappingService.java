@@ -14,7 +14,6 @@ public class ModelMappingService {
     public <T> T convertModelToDTO(Object object, Class<T> classType) {
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.LOOSE);
-
         return modelMapper.map(object, classType);
     }
 }

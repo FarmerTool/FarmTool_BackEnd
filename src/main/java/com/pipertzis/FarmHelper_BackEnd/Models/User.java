@@ -12,7 +12,7 @@ public class User {
     @Column (name="user_id")
     private UUID userId;
     @Column (nullable = false,name="name")
-    private String name;
+    private String username;
     @Column (nullable = false,name="surname")
     private String surname;
     @Column (nullable = false,unique = true,name="email")
@@ -26,9 +26,9 @@ public class User {
     public User() {
     }
 
-    public User(UUID userId, String name, String surname, String email, String password, String phoneNumber) {
+    public User(UUID userId, String username, String surname, String email, String password, String phoneNumber) {
         this.userId = userId;
-        this.name = name;
+        this.username = username;
         this.surname = surname;
         this.email = email;
         this.password = password;
@@ -39,12 +39,12 @@ public class User {
         return userId;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
     public String getSurname() {

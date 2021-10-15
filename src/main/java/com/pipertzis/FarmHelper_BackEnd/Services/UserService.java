@@ -32,29 +32,31 @@ public class UserService {
         return modelMappingService.convertModelToDTO(userRepository.save(user),classTypeToCoverTo);
     }
 
-    public UserDTO editUser(UUID userId, UserDTO userRequest) throws Exception {
+    public UserDTO editUser(UUID userId, UserDTO userRequest)  {
         User editedUser = userRepository.findById(userId)
                 .map(user -> {
                     user.setEmail(userRequest.getEmail());
-                    user.setName(userRequest.getName());
+                    user.setUsername(userRequest.getUsername());
                     user.setPhoneNumber(userRequest.getPhoneNumber());
                     user.setSurname(userRequest.getSurname());
                     return userRepository.save(user);
-                }).orElseThrow(() -> new Exception("Something went wrong"));
+                }).get();
         return modelMappingService.convertModelToDTO(editedUser,classTypeToCoverTo);
     }
 
-    public UserDTO deleteUser(UUID userId) throws Exception {
+    public UserDTO deleteUser(UUID userId){
         User deletedUser = userRepository.findById(userId)
                 .map(user -> {
                     userRepository.deleteById(userId);
                     return user;
-                }).orElseThrow(() -> new Exception("Couldn't delete the User"));
+                }).get();
         return modelMappingService.convertModelToDTO(deletedUser,classTypeToCoverTo);
 
     }
 
 
-
+    public User fetchUserById(UUID userId){
+        return userRepository.getById(userId);
+    }
 
 }
