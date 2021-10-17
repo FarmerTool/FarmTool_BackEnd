@@ -3,7 +3,6 @@ package com.pipertzis.FarmHelper_BackEnd.Services;
 import com.pipertzis.FarmHelper_BackEnd.Models.Fruit;
 import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.UserFruitDTO;
 import com.pipertzis.FarmHelper_BackEnd.Repositories.FruitRepository;
-import com.pipertzis.FarmHelper_BackEnd.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,29 +21,29 @@ public class FruitService {
 
     private final Class<UserFruitDTO> classToConvertTo = UserFruitDTO.class;
 
-    public List<UserFruitDTO> getAllFruitsByUserId(UUID userId){
+    public List<UserFruitDTO> getAllFruitsByUserId(UUID userId) {
         return fruitRepository.findByUser_userId(userId)
                 .stream()
-                .map(fruit -> modelMappingService.convertModelToDTO(fruit,classToConvertTo))
+                .map(fruit -> modelMappingService.convertModelToDTO(fruit, classToConvertTo))
                 .collect(Collectors.toList());
     }
 
-    public UserFruitDTO getFruitByFruitId(UUID fruitId){
-        return modelMappingService.convertModelToDTO(fruitRepository.getById(fruitId),classToConvertTo);
+    public UserFruitDTO getFruitByFruitId(UUID fruitId) {
+        return modelMappingService.convertModelToDTO(fruitRepository.getById(fruitId), classToConvertTo);
     }
 
-    public UserFruitDTO addFruitByUserId(UUID userId, Fruit fruit){
+    public UserFruitDTO addFruitByUserId(UUID userId, Fruit fruit) {
         fruit.setUser(userService.fetchUserById(userId));
-        return modelMappingService.convertModelToDTO(fruitRepository.save(fruit),classToConvertTo);
+        return modelMappingService.convertModelToDTO(fruitRepository.save(fruit), classToConvertTo);
     }
 
-    public UserFruitDTO editFruitByFruitId(UUID fruitId,Fruit fruitRequest) {
+    public UserFruitDTO editFruitByFruitId(UUID fruitId, Fruit fruitRequest) {
         Fruit editedFruit = fruitRepository.findById(fruitId)
                 .map(fruit -> {
                     fruit.setFruitName(fruitRequest.getFruitName());
                     return fruitRepository.save(fruit);
                 }).get();
-        return modelMappingService.convertModelToDTO(editedFruit,classToConvertTo);
+        return modelMappingService.convertModelToDTO(editedFruit, classToConvertTo);
     }
 
     public UserFruitDTO deleteFruitByFruitId(UUID fruitId) {
@@ -53,6 +52,10 @@ public class FruitService {
                     fruitRepository.delete(fruit);
                     return fruit;
                 }).get();
-        return modelMappingService.convertModelToDTO(deletedFruit,classToConvertTo);
+        return modelMappingService.convertModelToDTO(deletedFruit, classToConvertTo);
+    }
+
+    public Fruit fetchFruitById(UUID fruitId){
+        return fruitRepository.getById(fruitId);
     }
 }

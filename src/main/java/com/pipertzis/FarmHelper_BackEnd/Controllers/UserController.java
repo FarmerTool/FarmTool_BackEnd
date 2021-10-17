@@ -2,42 +2,38 @@ package com.pipertzis.FarmHelper_BackEnd.Controllers;
 
 import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.UserDTO;
 import com.pipertzis.FarmHelper_BackEnd.Models.User;
-import com.pipertzis.FarmHelper_BackEnd.Repositories.UserRepository;
 import com.pipertzis.FarmHelper_BackEnd.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
-import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/user/")
+@RequestMapping("/user")
 public class UserController {
 
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("all")
+    @GetMapping("/all")
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PostMapping("add")
+    @PostMapping("/add")
     public ResponseEntity<?> addUser(@Valid @RequestBody User user) {
         return ResponseEntity.ok(userService.addUser(user));
     }
 
-    @PutMapping("edit/{userId}")
+    @PutMapping("/edit/{userId}")
     public ResponseEntity<?> editUser(@PathVariable UUID userId, @Valid @RequestBody UserDTO userRequest) throws Exception {
         return ResponseEntity.ok(userService.editUser(userId,userRequest));
     }
 
-    @DeleteMapping("delete/{userId}")
+    @DeleteMapping("/delete/{userId}")
     public ResponseEntity<?> deleteUserByUserId(@PathVariable UUID userId) throws Exception {
 //        if (!userRepository.existsById(userId)) {
 //            return new ResponseEntity<>("User with this " + userId + " User ID does not exist",HttpStatus.BAD_REQUEST);
