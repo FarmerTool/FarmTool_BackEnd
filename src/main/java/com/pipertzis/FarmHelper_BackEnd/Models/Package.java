@@ -1,11 +1,19 @@
 package com.pipertzis.FarmHelper_BackEnd.Models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.util.Locale;
 import java.util.UUID;
 
 @Entity
 @Table(name = "packages")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Package {
 
     @Id
@@ -28,50 +36,5 @@ public class Package {
     private User user;
 
 
-    public Package() {
-    }
 
-    public Package(UUID packageId, String packageName, String fruitName, Fruit fruit, User user) {
-        this.packageId = packageId;
-        this.packageName = packageName;
-        this.fruitName = fruitName;
-        this.fruit = fruit;
-        this.user = user;
-    }
-
-    public UUID getPackageId() {
-        return packageId;
-    }
-
-    public String getPackageName() {
-        return packageName;
-    }
-
-    public void setPackageName(String packageName) {
-        this.packageName = packageName.toLowerCase(Locale.ROOT);
-    }
-
-    public String getFruitName() {
-        return fruitName;
-    }
-
-    public void setFruitName(String fruitName) {
-        this.fruitName = fruitName;
-    }
-
-    public Fruit getFruit() {
-        return fruit;
-    }
-
-    public void setFruit(Fruit fruit) {
-        this.fruit = fruit;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

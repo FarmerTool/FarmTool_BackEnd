@@ -1,61 +1,47 @@
 package com.pipertzis.FarmHelper_BackEnd.Controllers;
 
+import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.UserDTO;
 import com.pipertzis.FarmHelper_BackEnd.Models.User;
-import com.pipertzis.FarmHelper_BackEnd.Repositories.UserRepository;
+import com.pipertzis.FarmHelper_BackEnd.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
-import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
+
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
-    @GetMapping("/user/all")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PostMapping("/user/add")
-    public User addUser(@Valid @RequestBody User user) {
-        return userRepository.save(user);
+    @PostMapping("/add")
+    public ResponseEntity<?> addUser(@Valid @RequestBody User user) {
+        return ResponseEntity.ok(userService.addUser(user));
     }
 
-    @PutMapping("/user/edit/{userId}")
-    public User editUser(@PathVariable UUID userId, @Valid @RequestBody User userRequest) throws Exception {
-        return userRepository.findById(userId)
-                .map(user -> {
-                    user.setEmail(userRequest.getEmail());
-                    user.setName(userRequest.getName());
-                    user.setPassword(userRequest.getPassword());
-                    user.setPhoneNumber(userRequest.getPhoneNumber());
-                    user.setSurname(userRequest.getSurname());
-                    return userRepository.save(user);
-                }).orElseThrow(() -> new Exception("Something went wrong"));
+    @PutMapping("/edit/{userId}")
+    public ResponseEntity<?> editUser(@PathVariable UUID userId, @Valid @RequestBody UserDTO userRequest) throws Exception {
+        return ResponseEntity.ok(userService.editUser(userId,userRequest));
     }
 
-    @DeleteMapping("user/delete/{userId}")
+    @DeleteMapping("/delete/{userId}")
     public ResponseEntity<?> deleteUserByUserId(@PathVariable UUID userId) throws Exception {
-        if (!userRepository.existsById(userId)) {
-            return new ResponseEntity<>("User with this " + userId + " User ID does not exist",HttpStatus.BAD_REQUEST);
-        }
-
-        User userVal = userRepository.findById(userId)
-                .map(user -> {
-                    userRepository.deleteById(userId);
-                    return user;
-                }).orElseThrow(() -> new Exception("Couldn't delete the User"));
-        if(!userVal.getUserId().toString().isEmpty()){
-            return new ResponseEntity<>("User " + userVal + " deleted successfully",HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Something went wrong", HttpStatus.BAD_REQUEST);
+//        if (!userRepository.existsById(userId)) {
+//            return new ResponseEntity<>("User with this " + userId + " User ID does not exist",HttpStatus.BAD_REQUEST);
+//        }
+//        if(!userVal.getUserId().toString().isEmpty()){
+//            return new ResponseEntity<>("User " + userVal + " deleted successfully",HttpStatus.OK);
+//        }
+        return ResponseEntity.ok(userService.deleteUser(userId));
     }
 
 }

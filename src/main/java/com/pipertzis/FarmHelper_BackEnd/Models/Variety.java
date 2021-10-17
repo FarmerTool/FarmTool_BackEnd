@@ -1,12 +1,20 @@
 package com.pipertzis.FarmHelper_BackEnd.Models;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.util.Locale;
 import java.util.UUID;
 
 @Entity
 @Table(name = "variety")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Variety {
 
     @Id
@@ -23,34 +31,5 @@ public class Variety {
     private User user;
 
 
-    public Variety() {
-    }
 
-    public Variety(UUID varietyId, String varietyName, Fruit fruit, User user) {
-        this.varietyId = varietyId;
-        this.varietyName = varietyName;
-        this.fruit = fruit;
-        this.user = user;
-    }
-    public UUID getVarietyId() {
-        return varietyId;
-    }
-    public String getVarietyName() {
-        return varietyName;
-    }
-    public void setVarietyName(String varietyName) {
-        this.varietyName = varietyName.toLowerCase(Locale.ROOT);
-    }
-    public Fruit getFruit() {
-        return fruit;
-    }
-    public void setFruit(Fruit fruit) {
-        this.fruit = fruit;
-    }
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
