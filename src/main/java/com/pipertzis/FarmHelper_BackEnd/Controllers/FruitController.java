@@ -10,7 +10,7 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/fruits")
+@RequestMapping("/fruit")
 public class FruitController {
 
 
@@ -22,7 +22,7 @@ public class FruitController {
         return ResponseEntity.ok(fruitService.getAllFruitsByUserId(userId));
     }
 
-    @GetMapping("/fruit/{fruitId}")
+    @GetMapping("/{fruitId}")
     public ResponseEntity<?> getFruitByFruitId(@PathVariable UUID fruitId) {
 
         return ResponseEntity.ok(fruitService.getFruitByFruitId(fruitId));
@@ -30,14 +30,14 @@ public class FruitController {
 
     @PostMapping("/add/{userId}")
     public ResponseEntity<?> addFruitByUserId(@PathVariable UUID userId,
-                                  @Valid @RequestBody Fruit fruitRequest){
+                                              @Valid @RequestBody Fruit fruitRequest) {
 
-        return ResponseEntity.ok(fruitService.addFruitByUserId(userId,fruitRequest));
+        return ResponseEntity.ok(fruitService.addFruitByUserId(userId, fruitRequest));
     }
 
     @PutMapping("/edit/{fruitId}")
     public ResponseEntity<?> editFruitByFruitId(@PathVariable UUID fruitId, @Valid @RequestBody Fruit fruitRequest) throws Exception {
-        return ResponseEntity.ok(fruitService.editFruitByFruitId(fruitId,fruitRequest));
+        return ResponseEntity.ok(fruitService.editFruitByFruitId(fruitId, fruitRequest));
     }
 
     @DeleteMapping("/delete/{fruitId}")

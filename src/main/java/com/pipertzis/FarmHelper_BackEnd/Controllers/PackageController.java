@@ -10,28 +10,29 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/package")
 public class PackageController {
 
     @Autowired
     private PackageService packageService;
 
-    @GetMapping("/package/all")
-    public ResponseEntity<?> getAllPackages(){
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllPackages() {
         return ResponseEntity.ok(packageService.getAllPackages());
     }
 
-    @GetMapping("/package/fruit/{fruitId}")
-    public ResponseEntity<?> getAllPackagesByFruitId(@PathVariable UUID fruitId){
+    @GetMapping("/fruit/{fruitId}")
+    public ResponseEntity<?> getAllPackagesByFruitId(@PathVariable UUID fruitId) {
         return ResponseEntity.ok(packageService.getAllPackagesByFruitId(fruitId));
     }
 
-    @PostMapping("/package/add/{fruitId}")
-    public ResponseEntity<?> addPackageByFruitId(@PathVariable UUID fruitId, @Valid @RequestBody Package packageRequest) throws Exception{
-        return ResponseEntity.ok(packageService.addPackageByFruitId(fruitId,packageRequest));
+    @PostMapping("/add/{fruitId}")
+    public ResponseEntity<?> addPackageByFruitId(@PathVariable UUID fruitId, @Valid @RequestBody Package packageRequest) throws Exception {
+        return ResponseEntity.ok(packageService.addPackageByFruitId(fruitId, packageRequest));
     }
 
-    @PutMapping("/package/edit/{packageId}")
-    public ResponseEntity<?> editPackageByPackageId(@PathVariable UUID packageId,@Valid @RequestBody Package packageRequest) throws Exception {
-        return ResponseEntity.ok(packageService.editPackageByPackageId(packageId,packageRequest));
+    @PutMapping("/edit/{packageId}")
+    public ResponseEntity<?> editPackageByPackageId(@PathVariable UUID packageId, @Valid @RequestBody Package packageRequest) throws Exception {
+        return ResponseEntity.ok(packageService.editPackageByPackageId(packageId, packageRequest));
     }
 }

@@ -19,10 +19,10 @@ public class Fruit {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "fruit_id")
     private UUID fruitId;
-    @Column(nullable = false,name = "fruit_name")
+    @Column(nullable = false, name = "fruit_name")
     private String fruitName;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false,name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(nullable = false, name = "user_id", referencedColumnName = "user_id")
     private User user;
 
 

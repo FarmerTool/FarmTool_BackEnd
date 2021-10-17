@@ -30,17 +30,11 @@ public class UserController {
 
     @PutMapping("/edit/{userId}")
     public ResponseEntity<?> editUser(@PathVariable UUID userId, @Valid @RequestBody UserDTO userRequest) throws Exception {
-        return ResponseEntity.ok(userService.editUser(userId,userRequest));
+        return ResponseEntity.ok(userService.editUser(userId, userRequest));
     }
 
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<?> deleteUserByUserId(@PathVariable UUID userId) throws Exception {
-//        if (!userRepository.existsById(userId)) {
-//            return new ResponseEntity<>("User with this " + userId + " User ID does not exist",HttpStatus.BAD_REQUEST);
-//        }
-//        if(!userVal.getUserId().toString().isEmpty()){
-//            return new ResponseEntity<>("User " + userVal + " deleted successfully",HttpStatus.OK);
-//        }
         return ResponseEntity.ok(userService.deleteUser(userId));
     }
 

@@ -8,5 +8,6 @@ import java.util.UUID;
 
 public interface VarietyRepository extends JpaRepository<Variety, UUID> {
     List<Variety> findByFruit_fruitId(UUID fruitId);
+
     List<Variety> findByUser_userId(UUID userId);
 }

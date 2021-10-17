@@ -31,5 +31,4 @@ public class Variety {
     private User user;
 
 
-
 }

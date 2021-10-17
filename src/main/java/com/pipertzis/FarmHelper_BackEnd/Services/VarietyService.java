@@ -22,25 +22,25 @@ public class VarietyService {
     private ModelMappingService modelMappingService;
     private final Class<VarietyFruitUserDTO> classToConvertTo = VarietyFruitUserDTO.class;
 
-    public List<VarietyFruitUserDTO> getAllVarietiesByUserId(UUID userId){
+    public List<VarietyFruitUserDTO> getAllVarietiesByUserId(UUID userId) {
         return varietyRepository.findByUser_userId(userId)
                 .stream()
-                .map(variety -> modelMappingService.convertModelToDTO(variety,classToConvertTo))
+                .map(variety -> modelMappingService.convertModelToDTO(variety, classToConvertTo))
                 .collect(Collectors.toList());
     }
 
-    public List<VarietyFruitUserDTO> getAllVarietiesByFruitId(UUID fruitId){
+    public List<VarietyFruitUserDTO> getAllVarietiesByFruitId(UUID fruitId) {
         return varietyRepository.findByFruit_fruitId(fruitId)
                 .stream()
-                .map( variety -> modelMappingService.convertModelToDTO(variety,classToConvertTo))
+                .map(variety -> modelMappingService.convertModelToDTO(variety, classToConvertTo))
                 .collect(Collectors.toList());
     }
 
-    public VarietyFruitUserDTO getVarietyByVarietyId(UUID varietyId){
-        return modelMappingService.convertModelToDTO(varietyRepository.getById(varietyId),classToConvertTo);
+    public VarietyFruitUserDTO getVarietyByVarietyId(UUID varietyId) {
+        return modelMappingService.convertModelToDTO(varietyRepository.getById(varietyId), classToConvertTo);
     }
 
-    public VarietyFruitUserDTO addVarietyByFruitId(UUID fruitId, Variety varietyRequest){
+    public VarietyFruitUserDTO addVarietyByFruitId(UUID fruitId, Variety varietyRequest) {
         Variety savedVariety;
 
         Fruit fruit = fruitService.fetchFruitById(fruitId);
@@ -49,27 +49,26 @@ public class VarietyService {
         varietyRequest.setUser(fruit.getUser());
         savedVariety = varietyRepository.save(varietyRequest);
 
-        return modelMappingService.convertModelToDTO(savedVariety,classToConvertTo);
+        return modelMappingService.convertModelToDTO(savedVariety, classToConvertTo);
     }
 
-    public VarietyFruitUserDTO editVarietyNameByVarietyId(UUID varietyId, Variety varietyRequest){
+    public VarietyFruitUserDTO editVarietyNameByVarietyId(UUID varietyId, Variety varietyRequest) {
         Variety editedVariety = varietyRepository.findById(varietyId)
                 .map(variety -> {
                     variety.setVarietyName(varietyRequest.getVarietyName());
                     return varietyRepository.save(variety);
                 }).get();
-        return modelMappingService.convertModelToDTO(editedVariety,classToConvertTo);
+        return modelMappingService.convertModelToDTO(editedVariety, classToConvertTo);
     }
 
-    public VarietyFruitUserDTO deleteVarietyByVarietyId(UUID varietyId){
+    public VarietyFruitUserDTO deleteVarietyByVarietyId(UUID varietyId) {
         Variety deletedVariety = varietyRepository.findById(varietyId)
                 .map(variety -> {
                     varietyRepository.delete(variety);
                     return variety;
                 }).get();
-        return modelMappingService.convertModelToDTO(deletedVariety,classToConvertTo);
+        return modelMappingService.convertModelToDTO(deletedVariety, classToConvertTo);
     }
-
 
 
 }

@@ -18,13 +18,13 @@ public class Package {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false,name = "package_id")
+    @Column(nullable = false, name = "package_id")
     private UUID packageId;
 
-    @Column(nullable = false,name = "package_name")
+    @Column(nullable = false, name = "package_name")
     private String packageName;
 
-    @Column(nullable = false,name = "fruit_name")
+    @Column(nullable = false, name = "fruit_name")
     private String fruitName;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -34,7 +34,6 @@ public class Package {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id", referencedColumnName = "user_id")
     private User user;
-
 
 
 }

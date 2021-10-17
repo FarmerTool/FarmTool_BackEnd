@@ -10,6 +10,8 @@ import java.util.UUID;
 @Repository
 public interface FruitRepository extends JpaRepository<Fruit, UUID> {
     List<Fruit> findByUser_userId(UUID userId);
-    boolean existsFruitByFruitNameAndUser_userId(String fruitName,UUID userId);
+
+    boolean existsFruitByFruitNameAndUser_userId(String fruitName, UUID userId);
+
     boolean existsFruitByFruitName(String fruitName);
 }

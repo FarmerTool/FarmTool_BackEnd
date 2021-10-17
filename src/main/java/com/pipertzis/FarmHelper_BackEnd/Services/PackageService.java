@@ -37,22 +37,22 @@ public class PackageService {
                 .collect(Collectors.toList());
     }
 
-    public PackageFruitUserDTO addPackageByFruitId(UUID fruitId, Package pack){
+    public PackageFruitUserDTO addPackageByFruitId(UUID fruitId, Package pack) {
         Fruit fruit = fruitService.fetchFruitById(fruitId);
         User user = fruit.getUser();
         pack.setFruit(fruit);
         pack.setUser(user);
         pack.setFruitName(fruit.getFruitName());
-        return modelMappingService.convertModelToDTO(packageRepository.save(pack),classToConvertTo);
+        return modelMappingService.convertModelToDTO(packageRepository.save(pack), classToConvertTo);
     }
 
-    public PackageFruitUserDTO editPackageByPackageId(UUID packageId, Package packageRequest){
+    public PackageFruitUserDTO editPackageByPackageId(UUID packageId, Package packageRequest) {
         Package editedPackage = packageRepository.findById(packageId)
                 .map(pack -> {
                     pack.setPackageName(packageRequest.getPackageName());
                     return pack;
                 }).get();
-        return modelMappingService.convertModelToDTO(packageRepository.save(editedPackage),classToConvertTo);
+        return modelMappingService.convertModelToDTO(packageRepository.save(editedPackage), classToConvertTo);
     }
 
 }

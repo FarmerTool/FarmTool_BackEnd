@@ -55,7 +55,7 @@ public class FruitService {
         return modelMappingService.convertModelToDTO(deletedFruit, classToConvertTo);
     }
 
-    public Fruit fetchFruitById(UUID fruitId){
+    public Fruit fetchFruitById(UUID fruitId) {
         return fruitRepository.getById(fruitId);
     }
 }

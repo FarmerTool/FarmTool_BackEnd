@@ -20,19 +20,19 @@ public class UserService {
 
     private final Class<UserDTO> classTypeToCoverTo = UserDTO.class;
 
-    public List<UserDTO> getAllUsers(){
+    public List<UserDTO> getAllUsers() {
         return userRepository
                 .findAll()
                 .stream()
-                .map(user -> modelMappingService.convertModelToDTO(user,classTypeToCoverTo))
+                .map(user -> modelMappingService.convertModelToDTO(user, classTypeToCoverTo))
                 .collect(Collectors.toList());
     }
 
-    public UserDTO addUser(User user){
-        return modelMappingService.convertModelToDTO(userRepository.save(user),classTypeToCoverTo);
+    public UserDTO addUser(User user) {
+        return modelMappingService.convertModelToDTO(userRepository.save(user), classTypeToCoverTo);
     }
 
-    public UserDTO editUser(UUID userId, UserDTO userRequest)  {
+    public UserDTO editUser(UUID userId, UserDTO userRequest) {
         User editedUser = userRepository.findById(userId)
                 .map(user -> {
                     user.setEmail(userRequest.getEmail());
@@ -41,21 +41,21 @@ public class UserService {
                     user.setSurname(userRequest.getSurname());
                     return userRepository.save(user);
                 }).get();
-        return modelMappingService.convertModelToDTO(editedUser,classTypeToCoverTo);
+        return modelMappingService.convertModelToDTO(editedUser, classTypeToCoverTo);
     }
 
-    public UserDTO deleteUser(UUID userId){
+    public UserDTO deleteUser(UUID userId) {
         User deletedUser = userRepository.findById(userId)
                 .map(user -> {
                     userRepository.deleteById(userId);
                     return user;
                 }).get();
-        return modelMappingService.convertModelToDTO(deletedUser,classTypeToCoverTo);
+        return modelMappingService.convertModelToDTO(deletedUser, classTypeToCoverTo);
 
     }
 
 
-    public User fetchUserById(UUID userId){
+    public User fetchUserById(UUID userId) {
         return userRepository.getById(userId);
     }
 
