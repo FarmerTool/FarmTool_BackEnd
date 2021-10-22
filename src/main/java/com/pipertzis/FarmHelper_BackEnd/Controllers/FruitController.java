@@ -41,7 +41,7 @@ public class FruitController {
     }
 
     @DeleteMapping("/delete/{fruitId}")
-    public ResponseEntity<?> deleteFruitById(@PathVariable UUID fruitId) throws Exception {
+    public ResponseEntity<?> deleteFruitById(@PathVariable UUID fruitId) {
 
         return ResponseEntity.ok(fruitService.deleteFruitByFruitId(fruitId));
     }
