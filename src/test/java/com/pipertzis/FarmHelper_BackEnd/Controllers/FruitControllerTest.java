@@ -1,139 +1,152 @@
 package com.pipertzis.FarmHelper_BackEnd.Controllers;
 
-import com.pipertzis.FarmHelper_BackEnd.AbstractTest;
 import com.pipertzis.FarmHelper_BackEnd.Models.Fruit;
-import com.pipertzis.FarmHelper_BackEnd.Models.User;
-import com.pipertzis.FarmHelper_BackEnd.Repositories.UserRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.UserFruitDTO;
+import com.pipertzis.FarmHelper_BackEnd.Services.FruitService;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static com.pipertzis.FarmHelper_BackEnd.AbstractClass.asJsonString;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-@Transactional
-public class FruitControllerTest extends AbstractTest {
-    private String uri = "/fruits/";
-    private final User testUser = new User(null,"test","test","email","test","test");
-    private Fruit testFruit = new Fruit(null,"testName",null);
-    private final String userUuid = "0ad1fd93-ffc7-4537-9e65-98f9a90fba46";
-    private final String fruitUuid = "63dd2394-c384-478e-b86e-58d49dc7bc72";
+@ContextConfiguration(classes = {FruitController.class})
+@ExtendWith(SpringExtension.class)
+public class FruitControllerTest {
+    @Autowired
+    private FruitController fruitController;
 
-
+    @MockBean
+    private FruitService fruitService;
 
     @Test
-    public void getFruitByUserIdTest() throws Exception{
-        uri += "user/" + userUuid;
-        MvcResult mvcResult = super.mvc.perform(MockMvcRequestBuilders.get(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-        ).andDo(print()).andExpect(status().isOk()).andReturn();
-        Fruit[] fruits = super.mapFromJson(mvcResult.getResponse().getContentAsString(),Fruit[].class);
-        assertTrue(fruits.length > 0);
-        assertEquals(Arrays.stream(fruits).findAny().get().getUser().getUserId(), UUID.fromString(userUuid));
+    public void testGetAllFruitsByUserId() throws Exception {
+        when(this.fruitService.getAllFruitsByUserId(any())).thenReturn(new ArrayList<>());
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/fruit/user/{userId}",
+                UUID.randomUUID());
+        MockMvcBuilders.standaloneSetup(this.fruitController)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content().string("[]"))
+                .andDo(print());
     }
 
     @Test
-    public void getFruitByFruitIdTest() throws Exception{
-        uri += "fruit/" + fruitUuid;
-        MvcResult mvcResult = super.mvc.perform(MockMvcRequestBuilders.get(uri)
-        .accept(MediaType.APPLICATION_JSON_VALUE)
-        ).andDo(print()).andExpect(status().isOk()).andReturn();
-        Fruit fruit = super.mapFromJson(mvcResult.getResponse().getContentAsString(),Fruit.class);
-        assertEquals(fruit.getFruitName(),"portokalia");
+    public void testGetAllFruitsByUserIdWhenThereIsAFruit() throws Exception {
+        UserFruitDTO fruitDTO = new UserFruitDTO();
+        fruitDTO.setFruitId(UUID.randomUUID());
+        fruitDTO.setFruitName("testName");
+        List<UserFruitDTO> list = new ArrayList<>();
+        list.add(fruitDTO);
+
+        when(this.fruitService.getAllFruitsByUserId(any())).thenReturn(list);
+        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/fruit/user/{userId}", UUID.randomUUID());
+        MockMvcBuilders.standaloneSetup(this.fruitController)
+                .build()
+                .perform(getResult)
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].fruitName").value("testName"))
+                .andDo(print());
+
+        verify(this.fruitService).getAllFruitsByUserId(any());
     }
 
     @Test
-    public void postFruitTest() throws Exception{
-        uri += "add/" + userUuid;
-        MvcResult mvcResult = super.mvc.perform(MockMvcRequestBuilders.post(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(super.mapToJson(testFruit))
-        ).andDo(print()).andExpect(status().isOk()).andReturn();
-        Fruit fruit = super.mapFromJson(mvcResult.getResponse().getContentAsString(),Fruit.class);
-        assertEquals(fruit.getFruitName(),"testname");
-    }
+    public void testGetFruitByFruitId() throws Exception {
+        UserFruitDTO fruitDTO = new UserFruitDTO();
 
-    @Test
-    public void postFruitByUserIdWrongId() throws Exception{
-        uri += "add/" + UUID.randomUUID().toString();
-        MvcResult mvcResult = super.mvc.perform(MockMvcRequestBuilders.post(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(super.mapToJson(testFruit))
-        ).andDo(print()).andExpect(status().isBadRequest()).andReturn();
-    }
+        when(this.fruitService.getFruitByFruitId(any())).thenReturn(fruitDTO);
 
-    @Test
-    public void postFruitByUserIdSameFruitName() throws Exception{
-        uri += "add/" + userUuid;
-        testFruit.setFruitName("portokalia");
-        MvcResult mvcResult = super.mvc.perform(MockMvcRequestBuilders.post(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(super.mapToJson(testFruit))
-        ).andDo(print()).andExpect(status().isBadRequest()).andReturn();
-    }
+        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/fruit/{fruitId}", UUID.randomUUID());
+        MockMvcBuilders.standaloneSetup(this.fruitController)
+                .build()
+                .perform(getResult)
+                .andExpect(status().isOk())
+                .andExpect(content().string(asJsonString(fruitDTO)))
+                .andDo(print());
 
-    @Test
-    public void putFruitTest() throws Exception{
-        Fruit tempFruit = new Fruit(null,"editFruitName",null);
-        uri += "edit/" + fruitUuid;
-        MvcResult mvcResult = super.mvc.perform(MockMvcRequestBuilders.put(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(super.mapToJson(tempFruit))
-        ).andDo(print()).andExpect(status().isOk()).andReturn();
-        Fruit checkFruit = super.mapFromJson(mvcResult.getResponse().getContentAsString(),Fruit.class);
-        assertEquals(tempFruit.getFruitName(),checkFruit.getFruitName());
-    }
-
-    @Test
-    public void putFruitSameFruitNameTest() throws Exception{
-        Fruit tempFruit = new Fruit(null,"aktinidia",null);
-        uri += "edit/" + fruitUuid;
-        MvcResult mvcResult = super.mvc.perform(MockMvcRequestBuilders.put(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(super.mapToJson(tempFruit))
-        ).andDo(print()).andExpect(status().isBadRequest()).andReturn();
-    }
-
-
-    @Test
-    public void deleteFruitTest() throws Exception{
-        uri += "delete/" + fruitUuid;
-        MvcResult mvcResult = super.mvc.perform(MockMvcRequestBuilders.delete(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-        ).andDo(print()).andExpect(status().isOk()).andReturn();
+        verify(this.fruitService).getFruitByFruitId(any());
 
     }
 
     @Test
-    public void deleteFruitWrongFruitId() throws Exception{
-        uri += "delete/" + UUID.randomUUID();
-        MvcResult mvcResult = super.mvc.perform(MockMvcRequestBuilders.delete(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-        ).andDo(print()).andExpect(status().isBadRequest()).andReturn();
+    public void testAddFruitByUserId() throws Exception {
+        UserFruitDTO fruitDTO = new UserFruitDTO();
+        Fruit fruit = new Fruit();
+
+        when(this.fruitService.addFruitByUserId(any(),any())).thenReturn(fruitDTO);
+
+        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.post("/fruit/add/{userId}",UUID.randomUUID())
+                                                                        .content(asJsonString(fruit))
+                                                                        .contentType(MediaType.APPLICATION_JSON);
+        MockMvcBuilders.standaloneSetup(this.fruitController)
+                .build()
+                .perform(getResult)
+                .andExpect(status().isOk())
+                .andExpect(content().string(asJsonString(fruitDTO)))
+                .andDo(print());
+
+        verify(this.fruitService).addFruitByUserId(any(),any());
     }
 
+    @Test
+    public void testEditFruitByFruitId() throws Exception {
+        Fruit fruit = new Fruit();
+        UserFruitDTO fruitDTO = new UserFruitDTO();
 
+        when(this.fruitService.editFruitByFruitId(any(),any())).thenReturn(fruitDTO);
 
+        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.put("/fruit/edit/{fruitId}",UUID.randomUUID())
+                                                                        .content(asJsonString(fruit))
+                                                                        .contentType(MediaType.APPLICATION_JSON);
+        MockMvcBuilders.standaloneSetup(this.fruitController)
+                .build()
+                .perform(getResult)
+                .andExpect(status().isOk())
+                .andExpect(content().string(asJsonString(fruitDTO)))
+                .andDo(print());
+
+        verify(this.fruitService).editFruitByFruitId(any(),any());
+
+    }
+
+    @Test
+    public void testDeleteFruitByFruitId() throws Exception {
+        UserFruitDTO fruitDTO = new UserFruitDTO();
+
+        when(this.fruitService.deleteFruitByFruitId(any())).thenReturn(fruitDTO);
+
+        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.delete("/fruit/delete/{fruitId}",UUID.randomUUID());
+
+        MockMvcBuilders.standaloneSetup(this.fruitController)
+                .build()
+                .perform(getResult)
+                .andExpect(status().isOk())
+                .andExpect(content().string(asJsonString(fruitDTO)))
+                .andDo(print());
+
+        verify(this.fruitService).deleteFruitByFruitId(any());
+
+    }
 }
+
