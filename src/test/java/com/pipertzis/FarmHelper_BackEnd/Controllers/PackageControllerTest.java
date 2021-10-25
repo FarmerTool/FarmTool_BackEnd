@@ -1,22 +1,8 @@
 package com.pipertzis.FarmHelper_BackEnd.Controllers;
 
-import static com.pipertzis.FarmHelper_BackEnd.AbstractClass.asJsonString;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pipertzis.FarmHelper_BackEnd.Models.Fruit;
 import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.PackageFruitUserDTO;
 import com.pipertzis.FarmHelper_BackEnd.Models.Package;
-import com.pipertzis.FarmHelper_BackEnd.Models.User;
 import com.pipertzis.FarmHelper_BackEnd.Services.PackageService;
-
-import java.util.ArrayList;
-
-import java.util.Collections;
-import java.util.UUID;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +12,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Collections;
+import java.util.UUID;
+
+import static com.pipertzis.FarmHelper_BackEnd.AbstractClass.asJsonString;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ContextConfiguration(classes = {PackageController.class})
 @ExtendWith(SpringExtension.class)

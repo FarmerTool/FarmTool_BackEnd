@@ -9,6 +9,7 @@ import com.pipertzis.FarmHelper_BackEnd.Repositories.PackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -51,7 +52,7 @@ public class PackageService {
                 .map(pack -> {
                     pack.setPackageName(packageRequest.getPackageName());
                     return pack;
-                }).get();
+                }).orElseThrow(EntityNotFoundException::new);
         return modelMappingService.convertModelToDTO(packageRepository.save(editedPackage), classToConvertTo);
     }
 

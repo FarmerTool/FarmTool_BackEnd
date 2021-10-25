@@ -6,6 +6,7 @@ import com.pipertzis.FarmHelper_BackEnd.Repositories.FruitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -42,7 +43,7 @@ public class FruitService {
                 .map(fruit -> {
                     fruit.setFruitName(fruitRequest.getFruitName());
                     return fruitRepository.save(fruit);
-                }).get();
+                }).orElseThrow(EntityNotFoundException::new);
         return modelMappingService.convertModelToDTO(editedFruit, classToConvertTo);
     }
 
@@ -51,7 +52,7 @@ public class FruitService {
                 .map(fruit -> {
                     fruitRepository.delete(fruit);
                     return fruit;
-                }).get();
+                }).orElseThrow(EntityNotFoundException::new);
         return modelMappingService.convertModelToDTO(deletedFruit, classToConvertTo);
     }
 

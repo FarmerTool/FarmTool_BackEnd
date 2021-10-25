@@ -7,6 +7,7 @@ import com.pipertzis.FarmHelper_BackEnd.Repositories.VarietyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -57,7 +58,7 @@ public class VarietyService {
                 .map(variety -> {
                     variety.setVarietyName(varietyRequest.getVarietyName());
                     return varietyRepository.save(variety);
-                }).get();
+                }).orElseThrow(EntityNotFoundException::new);
         return modelMappingService.convertModelToDTO(editedVariety, classToConvertTo);
     }
 
@@ -66,7 +67,7 @@ public class VarietyService {
                 .map(variety -> {
                     varietyRepository.delete(variety);
                     return variety;
-                }).get();
+                }).orElseThrow(EntityNotFoundException::new);
         return modelMappingService.convertModelToDTO(deletedVariety, classToConvertTo);
     }
 

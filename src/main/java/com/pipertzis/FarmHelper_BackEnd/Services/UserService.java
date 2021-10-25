@@ -6,6 +6,7 @@ import com.pipertzis.FarmHelper_BackEnd.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -34,13 +35,14 @@ public class UserService {
 
     public UserDTO editUser(UUID userId, UserDTO userRequest) {
         User editedUser = userRepository.findById(userId)
-                .map(user -> {
-                    user.setEmail(userRequest.getEmail());
-                    user.setUsername(userRequest.getUsername());
-                    user.setPhoneNumber(userRequest.getPhoneNumber());
-                    user.setSurname(userRequest.getSurname());
-                    return userRepository.save(user);
-                }).get();
+                    .map(user -> {
+                        user.setEmail(userRequest.getEmail());
+                        user.setUsername(userRequest.getUsername());
+                        user.setPhoneNumber(userRequest.getPhoneNumber());
+                        user.setSurname(userRequest.getSurname());
+                        return userRepository.save(user);
+                    }).orElseThrow(EntityNotFoundException::new);
+
         return modelMappingService.convertModelToDTO(editedUser, classTypeToCoverTo);
     }
 
@@ -49,7 +51,8 @@ public class UserService {
                 .map(user -> {
                     userRepository.deleteById(userId);
                     return user;
-                }).get();
+                }).orElseThrow(EntityNotFoundException::new);
+
         return modelMappingService.convertModelToDTO(deletedUser, classTypeToCoverTo);
 
     }

@@ -8,15 +8,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
 import java.net.ConnectException;
-import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
-
-    @ExceptionHandler(value = NoSuchElementException.class)
-    public ResponseEntity<?> notFound() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Such Element Found");
-    }
 
     @ExceptionHandler(value = EntityNotFoundException.class)
     public ResponseEntity<?> entityNotFoundHandler() {
@@ -32,7 +27,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(value = PSQLException.class)
     public ResponseEntity<?> duplicateKeyHandler(PSQLException psqlException) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(psqlException.getServerErrorMessage().getDetail());
+        return ResponseEntity.status(HttpStatus.FOUND).body(Objects.requireNonNull(psqlException.getServerErrorMessage()).getDetail());
     }
 
 
