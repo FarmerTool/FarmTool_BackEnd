@@ -6,6 +6,7 @@ import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.EntryDTO;
 import com.pipertzis.FarmHelper_BackEnd.Models.User;
 import com.pipertzis.FarmHelper_BackEnd.Models.Variety;
 import com.pipertzis.FarmHelper_BackEnd.Repositories.EntryRepository;
+import com.pipertzis.FarmHelper_BackEnd.Repositories.PackageRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +36,18 @@ public class EntryServiceTest {
     private VarietyService varietyService;
     @MockBean
     private EntryRepository entryRepository;
+    @MockBean
+    private PackageService packageService;
 
     @Test
-    public void getAllEntriesByUserIdTestWhenThereAreNoData() {
+    public void testGetAllEntriesByUserIdTestWhenThereAreNoData() {
         when(this.entryRepository.findByUserUserId(any())).thenReturn(new ArrayList<>());
         assertTrue(this.entryService.getAllEntriesByUserId(any()).isEmpty());
         verify(this.entryRepository).findByUserUserId(any());
     }
 
     @Test
-    public void getAllEntriesByUserIdTestWhenThereAreData() {
+    public void testGetAllEntriesByUserIdTestWhenThereAreData() {
         Entry entry = new Entry();
         List<Entry> list = Collections.singletonList(entry);
 
@@ -54,7 +57,7 @@ public class EntryServiceTest {
     }
 
     @Test
-    public void getAllEntriesByFruitIdTest() {
+    public void testGetAllEntriesByFruitId() {
         Entry entry = new Entry();
         List<Entry> list = Collections.singletonList(entry);
 
@@ -64,7 +67,7 @@ public class EntryServiceTest {
     }
 
     @Test
-    public void getAllEntriesByVarietyIdTest() {
+    public void testGetAllEntriesByVarietyId() {
         Entry entry = new Entry();
         List<Entry> list = Collections.singletonList(entry);
 
@@ -74,7 +77,7 @@ public class EntryServiceTest {
     }
 
     @Test
-    public void addEntryByVarietyIdAndPackageIdTest() {
+    public void testAddEntryByVarietyIdAndPackageId() {
         Variety variety = new Variety();
         variety.setFruit(new Fruit());
         variety.setUser(new User());

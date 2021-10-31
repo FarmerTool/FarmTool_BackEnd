@@ -19,8 +19,10 @@ public class ModelMappingService {
                 .setAmbiguityIgnored(true);
 
         // TODO: 10/25/2021 If i find a better solution for mapping packageName to EntryDTO CHANGE IT
-        modelMapper.typeMap(Entry.class, EntryDTO.class)
-                .addMappings(mapper -> mapper.map(Entry::getPackName, EntryDTO::setPackageName));
+        if(object == Entry.class){
+            modelMapper.typeMap(Entry.class, EntryDTO.class)
+                    .addMappings(mapper -> mapper.map(Entry::getPackName, EntryDTO::setPackageName));
+        }
 
         return modelMapper.map(object, classType);
     }
