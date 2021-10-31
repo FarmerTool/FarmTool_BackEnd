@@ -1,7 +1,7 @@
 package com.pipertzis.FarmHelper_BackEnd.Services;
 
 import com.pipertzis.FarmHelper_BackEnd.Models.Fruit;
-import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.VarietyFruitUserDTO;
+import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.VarietyDTO;
 import com.pipertzis.FarmHelper_BackEnd.Models.Variety;
 import com.pipertzis.FarmHelper_BackEnd.Repositories.VarietyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,27 +21,27 @@ public class VarietyService {
     private FruitService fruitService;
     @Autowired
     private ModelMappingService modelMappingService;
-    private final Class<VarietyFruitUserDTO> classToConvertTo = VarietyFruitUserDTO.class;
+    private final Class<VarietyDTO> classToConvertTo = VarietyDTO.class;
 
-    public List<VarietyFruitUserDTO> getAllVarietiesByUserId(UUID userId) {
+    public List<VarietyDTO> getAllVarietiesByUserId(UUID userId) {
         return varietyRepository.findByUser_userId(userId)
                 .stream()
                 .map(variety -> modelMappingService.convertModelToDTO(variety, classToConvertTo))
                 .collect(Collectors.toList());
     }
 
-    public List<VarietyFruitUserDTO> getAllVarietiesByFruitId(UUID fruitId) {
+    public List<VarietyDTO> getAllVarietiesByFruitId(UUID fruitId) {
         return varietyRepository.findByFruit_fruitId(fruitId)
                 .stream()
                 .map(variety -> modelMappingService.convertModelToDTO(variety, classToConvertTo))
                 .collect(Collectors.toList());
     }
 
-    public VarietyFruitUserDTO getVarietyByVarietyId(UUID varietyId) {
+    public VarietyDTO getVarietyByVarietyId(UUID varietyId) {
         return modelMappingService.convertModelToDTO(varietyRepository.getById(varietyId), classToConvertTo);
     }
 
-    public VarietyFruitUserDTO addVarietyByFruitId(UUID fruitId, Variety varietyRequest) {
+    public VarietyDTO addVarietyByFruitId(UUID fruitId, Variety varietyRequest) {
         Variety savedVariety;
 
         Fruit fruit = fruitService.fetchFruitById(fruitId);
@@ -53,7 +53,7 @@ public class VarietyService {
         return modelMappingService.convertModelToDTO(savedVariety, classToConvertTo);
     }
 
-    public VarietyFruitUserDTO editVarietyNameByVarietyId(UUID varietyId, Variety varietyRequest) {
+    public VarietyDTO editVarietyNameByVarietyId(UUID varietyId, Variety varietyRequest) {
         Variety editedVariety = varietyRepository.findById(varietyId)
                 .map(variety -> {
                     variety.setVarietyName(varietyRequest.getVarietyName());
@@ -62,13 +62,17 @@ public class VarietyService {
         return modelMappingService.convertModelToDTO(editedVariety, classToConvertTo);
     }
 
-    public VarietyFruitUserDTO deleteVarietyByVarietyId(UUID varietyId) {
+    public VarietyDTO deleteVarietyByVarietyId(UUID varietyId) {
         Variety deletedVariety = varietyRepository.findById(varietyId)
                 .map(variety -> {
                     varietyRepository.delete(variety);
                     return variety;
                 }).orElseThrow(EntityNotFoundException::new);
         return modelMappingService.convertModelToDTO(deletedVariety, classToConvertTo);
+    }
+
+    public Variety fetchVarietyByVarietyId(UUID varietyId){
+        return varietyRepository.getById(varietyId);
     }
 
 

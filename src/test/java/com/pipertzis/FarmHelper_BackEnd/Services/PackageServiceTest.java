@@ -1,7 +1,7 @@
 package com.pipertzis.FarmHelper_BackEnd.Services;
 
 import com.pipertzis.FarmHelper_BackEnd.Models.Fruit;
-import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.PackageFruitUserDTO;
+import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.PackageDTO;
 import com.pipertzis.FarmHelper_BackEnd.Models.Package;
 import com.pipertzis.FarmHelper_BackEnd.Models.User;
 import com.pipertzis.FarmHelper_BackEnd.Repositories.PackageRepository;
@@ -75,7 +75,7 @@ public class PackageServiceTest {
         resultPackageList.add(resultPackage);
         when(this.packageRepository.findAll()).thenReturn(resultPackageList);
         when(this.modelMappingService.convertModelToDTO((Object) any(), (Class<Object>) any()))
-                .thenReturn(new PackageFruitUserDTO());
+                .thenReturn(new PackageDTO());
         assertEquals(1, this.packageService.getAllPackages().size());
         verify(this.packageRepository).findAll();
         verify(this.modelMappingService).convertModelToDTO((Object) any(), (Class<Object>) any());
@@ -123,7 +123,7 @@ public class PackageServiceTest {
         resultPackageList.add(resultPackage);
         when(this.packageRepository.findByFruit_FruitId((UUID) any())).thenReturn(resultPackageList);
         when(this.modelMappingService.convertModelToDTO((Object) any(), (Class<Object>) any()))
-                .thenReturn(new PackageFruitUserDTO());
+                .thenReturn(new PackageDTO());
         assertEquals(1, this.packageService.getAllPackagesByFruitId(UUID.randomUUID()).size());
         verify(this.packageRepository).findByFruit_FruitId((UUID) any());
         verify(this.modelMappingService).convertModelToDTO((Object) any(), (Class<Object>) any());
@@ -160,9 +160,9 @@ public class PackageServiceTest {
         resultPackage.setFruitName("Fruit Name");
         resultPackage.setFruit(fruit);
         when(this.packageRepository.save((Package) any())).thenReturn(resultPackage);
-        PackageFruitUserDTO packageFruitUserDTO = new PackageFruitUserDTO();
+        PackageDTO packageDTO = new PackageDTO();
         when(this.modelMappingService.convertModelToDTO((Object) any(), (Class<Object>) any()))
-                .thenReturn(packageFruitUserDTO);
+                .thenReturn(packageDTO);
 
         User user2 = new User();
         user2.setEmail("jane.doe@example.org");
@@ -206,7 +206,7 @@ public class PackageServiceTest {
         resultPackage1.setPackageId(UUID.randomUUID());
         resultPackage1.setFruitName("Fruit Name");
         resultPackage1.setFruit(fruit2);
-        assertSame(packageFruitUserDTO, this.packageService.addPackageByFruitId(fruitId, resultPackage1));
+        assertSame(packageDTO, this.packageService.addPackageByFruitId(fruitId, resultPackage1));
         verify(this.packageRepository).save((Package) any());
         verify(this.modelMappingService).convertModelToDTO((Object) any(), (Class<Object>) any());
         verify(this.fruitService).fetchFruitById((UUID) any());
@@ -276,9 +276,9 @@ public class PackageServiceTest {
         resultPackage1.setFruit(fruit1);
         when(this.packageRepository.save((Package) any())).thenReturn(resultPackage1);
         when(this.packageRepository.findById((UUID) any())).thenReturn(ofResult);
-        PackageFruitUserDTO packageFruitUserDTO = new PackageFruitUserDTO();
+        PackageDTO packageDTO = new PackageDTO();
         when(this.modelMappingService.convertModelToDTO((Object) any(), (Class<Object>) any()))
-                .thenReturn(packageFruitUserDTO);
+                .thenReturn(packageDTO);
         UUID packageId = UUID.randomUUID();
 
         User user4 = new User();
@@ -308,7 +308,7 @@ public class PackageServiceTest {
         resultPackage2.setPackageId(UUID.randomUUID());
         resultPackage2.setFruitName("Fruit Name");
         resultPackage2.setFruit(fruit2);
-        assertSame(packageFruitUserDTO, this.packageService.editPackageByPackageId(packageId, resultPackage2));
+        assertSame(packageDTO, this.packageService.editPackageByPackageId(packageId, resultPackage2));
         verify(this.packageRepository).findById((UUID) any());
         verify(this.packageRepository).save((Package) any());
         verify(this.modelMappingService).convertModelToDTO((Object) any(), (Class<Object>) any());

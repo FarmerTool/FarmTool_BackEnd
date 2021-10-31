@@ -50,5 +50,9 @@ public class Entry {
     @JoinColumn(nullable = false, name = "package_id", referencedColumnName = "package_id")
     private Package aPackage;
 
+    //Just to help on mapping
+    public String getPackName(){
+        return aPackage.getPackageName();
+    }
 
 }

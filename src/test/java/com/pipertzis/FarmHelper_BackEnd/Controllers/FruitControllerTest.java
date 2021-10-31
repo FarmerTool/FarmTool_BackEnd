@@ -1,7 +1,7 @@
 package com.pipertzis.FarmHelper_BackEnd.Controllers;
 
 import com.pipertzis.FarmHelper_BackEnd.Models.Fruit;
-import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.UserFruitDTO;
+import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.FruitDTO;
 import com.pipertzis.FarmHelper_BackEnd.Services.FruitService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,10 +50,10 @@ public class FruitControllerTest {
 
     @Test
     public void testGetAllFruitsByUserIdWhenThereIsAFruit() throws Exception {
-        UserFruitDTO fruitDTO = new UserFruitDTO();
+        FruitDTO fruitDTO = new FruitDTO();
         fruitDTO.setFruitId(UUID.randomUUID());
         fruitDTO.setFruitName("testName");
-        List<UserFruitDTO> list = new ArrayList<>();
+        List<FruitDTO> list = new ArrayList<>();
         list.add(fruitDTO);
 
         when(this.fruitService.getAllFruitsByUserId(any())).thenReturn(list);
@@ -71,7 +71,7 @@ public class FruitControllerTest {
 
     @Test
     public void testGetFruitByFruitId() throws Exception {
-        UserFruitDTO fruitDTO = new UserFruitDTO();
+        FruitDTO fruitDTO = new FruitDTO();
 
         when(this.fruitService.getFruitByFruitId(any())).thenReturn(fruitDTO);
 
@@ -89,7 +89,7 @@ public class FruitControllerTest {
 
     @Test
     public void testAddFruitByUserId() throws Exception {
-        UserFruitDTO fruitDTO = new UserFruitDTO();
+        FruitDTO fruitDTO = new FruitDTO();
         Fruit fruit = new Fruit();
 
         when(this.fruitService.addFruitByUserId(any(),any())).thenReturn(fruitDTO);
@@ -110,7 +110,7 @@ public class FruitControllerTest {
     @Test
     public void testEditFruitByFruitId() throws Exception {
         Fruit fruit = new Fruit();
-        UserFruitDTO fruitDTO = new UserFruitDTO();
+        FruitDTO fruitDTO = new FruitDTO();
 
         when(this.fruitService.editFruitByFruitId(any(),any())).thenReturn(fruitDTO);
 
@@ -130,7 +130,7 @@ public class FruitControllerTest {
 
     @Test
     public void testDeleteFruitByFruitId() throws Exception {
-        UserFruitDTO fruitDTO = new UserFruitDTO();
+        FruitDTO fruitDTO = new FruitDTO();
 
         when(this.fruitService.deleteFruitByFruitId(any())).thenReturn(fruitDTO);
 

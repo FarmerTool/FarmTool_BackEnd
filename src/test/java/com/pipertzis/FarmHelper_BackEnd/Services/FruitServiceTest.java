@@ -1,7 +1,7 @@
 package com.pipertzis.FarmHelper_BackEnd.Services;
 
 import com.pipertzis.FarmHelper_BackEnd.Models.Fruit;
-import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.UserFruitDTO;
+import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.FruitDTO;
 import com.pipertzis.FarmHelper_BackEnd.Models.User;
 import com.pipertzis.FarmHelper_BackEnd.Repositories.FruitRepository;
 import org.junit.jupiter.api.Test;
@@ -42,13 +42,13 @@ public class FruitServiceTest {
 
     @Test
     public void testGetAllFruitsByUserId2() {
-        UserFruitDTO userFruitDTO = new UserFruitDTO();
-        userFruitDTO.setUserId(UUID.randomUUID());
-        userFruitDTO.setUsername("janedoe");
-        userFruitDTO.setFruitName("Fruit Name");
-        userFruitDTO.setSurname("Doe");
-        userFruitDTO.setFruitId(UUID.randomUUID());
-        when(this.modelMappingService.convertModelToDTO(any(), any())).thenReturn(userFruitDTO);
+        FruitDTO fruitDTO = new FruitDTO();
+        fruitDTO.setUserId(UUID.randomUUID());
+        fruitDTO.setUsername("janedoe");
+        fruitDTO.setFruitName("Fruit Name");
+        fruitDTO.setSurname("Doe");
+        fruitDTO.setFruitId(UUID.randomUUID());
+        when(this.modelMappingService.convertModelToDTO(any(), any())).thenReturn(fruitDTO);
 
         User user = new User();
         user.setEmail("jane.doe@example.org");
@@ -73,13 +73,13 @@ public class FruitServiceTest {
 
     @Test
     public void testGetAllFruitsByUserId3() {
-        UserFruitDTO userFruitDTO = new UserFruitDTO();
-        userFruitDTO.setUserId(UUID.randomUUID());
-        userFruitDTO.setUsername("janedoe");
-        userFruitDTO.setFruitName("Fruit Name");
-        userFruitDTO.setSurname("Doe");
-        userFruitDTO.setFruitId(UUID.randomUUID());
-        when(this.modelMappingService.convertModelToDTO(any(), any())).thenReturn(userFruitDTO);
+        FruitDTO fruitDTO = new FruitDTO();
+        fruitDTO.setUserId(UUID.randomUUID());
+        fruitDTO.setUsername("janedoe");
+        fruitDTO.setFruitName("Fruit Name");
+        fruitDTO.setSurname("Doe");
+        fruitDTO.setFruitId(UUID.randomUUID());
+        when(this.modelMappingService.convertModelToDTO(any(), any())).thenReturn(fruitDTO);
 
         User user = new User();
         user.setEmail("jane.doe@example.org");
@@ -118,13 +118,13 @@ public class FruitServiceTest {
 
     @Test
     public void testGetFruitByFruitId() {
-        UserFruitDTO userFruitDTO = new UserFruitDTO();
-        userFruitDTO.setUserId(UUID.randomUUID());
-        userFruitDTO.setUsername("janedoe");
-        userFruitDTO.setFruitName("Fruit Name");
-        userFruitDTO.setSurname("Doe");
-        userFruitDTO.setFruitId(UUID.randomUUID());
-        when(this.modelMappingService.convertModelToDTO(any(), any())).thenReturn(userFruitDTO);
+        FruitDTO fruitDTO = new FruitDTO();
+        fruitDTO.setUserId(UUID.randomUUID());
+        fruitDTO.setUsername("janedoe");
+        fruitDTO.setFruitName("Fruit Name");
+        fruitDTO.setSurname("Doe");
+        fruitDTO.setFruitId(UUID.randomUUID());
+        when(this.modelMappingService.convertModelToDTO(any(), any())).thenReturn(fruitDTO);
 
         User user = new User();
         user.setEmail("jane.doe@example.org");
@@ -139,7 +139,7 @@ public class FruitServiceTest {
         fruit.setFruitName("Fruit Name");
         fruit.setFruitId(UUID.randomUUID());
         when(this.fruitRepository.getById(any())).thenReturn(fruit);
-        assertSame(userFruitDTO, this.fruitService.getFruitByFruitId(UUID.randomUUID()));
+        assertSame(fruitDTO, this.fruitService.getFruitByFruitId(UUID.randomUUID()));
         verify(this.modelMappingService).convertModelToDTO(any(), any());
         verify(this.fruitRepository).getById(any());
     }
@@ -155,13 +155,13 @@ public class FruitServiceTest {
         user.setSurname("Doe");
         when(this.userService.fetchUserById(any())).thenReturn(user);
 
-        UserFruitDTO userFruitDTO = new UserFruitDTO();
-        userFruitDTO.setUserId(UUID.randomUUID());
-        userFruitDTO.setUsername("janedoe");
-        userFruitDTO.setFruitName("Fruit Name");
-        userFruitDTO.setSurname("Doe");
-        userFruitDTO.setFruitId(UUID.randomUUID());
-        when(this.modelMappingService.convertModelToDTO(any(), any())).thenReturn(userFruitDTO);
+        FruitDTO fruitDTO = new FruitDTO();
+        fruitDTO.setUserId(UUID.randomUUID());
+        fruitDTO.setUsername("janedoe");
+        fruitDTO.setFruitName("Fruit Name");
+        fruitDTO.setSurname("Doe");
+        fruitDTO.setFruitId(UUID.randomUUID());
+        when(this.modelMappingService.convertModelToDTO(any(), any())).thenReturn(fruitDTO);
 
         User user1 = new User();
         user1.setEmail("jane.doe@example.org");
@@ -190,7 +190,7 @@ public class FruitServiceTest {
         fruit1.setUser(user2);
         fruit1.setFruitName("Fruit Name");
         fruit1.setFruitId(UUID.randomUUID());
-        assertSame(userFruitDTO, this.fruitService.addFruitByUserId(userId, fruit1));
+        assertSame(fruitDTO, this.fruitService.addFruitByUserId(userId, fruit1));
         verify(this.userService).fetchUserById(any());
         verify(this.modelMappingService).convertModelToDTO(any(), any());
         verify(this.fruitRepository).save(any());
@@ -199,13 +199,13 @@ public class FruitServiceTest {
 
     @Test
     public void testEditFruitByFruitId() {
-        UserFruitDTO userFruitDTO = new UserFruitDTO();
-        userFruitDTO.setUserId(UUID.randomUUID());
-        userFruitDTO.setUsername("janedoe");
-        userFruitDTO.setFruitName("Fruit Name");
-        userFruitDTO.setSurname("Doe");
-        userFruitDTO.setFruitId(UUID.randomUUID());
-        when(this.modelMappingService.convertModelToDTO(any(), any())).thenReturn(userFruitDTO);
+        FruitDTO fruitDTO = new FruitDTO();
+        fruitDTO.setUserId(UUID.randomUUID());
+        fruitDTO.setUsername("janedoe");
+        fruitDTO.setFruitName("Fruit Name");
+        fruitDTO.setSurname("Doe");
+        fruitDTO.setFruitId(UUID.randomUUID());
+        when(this.modelMappingService.convertModelToDTO(any(), any())).thenReturn(fruitDTO);
 
         User user = new User();
         user.setEmail("jane.doe@example.org");
@@ -249,7 +249,7 @@ public class FruitServiceTest {
         fruit2.setUser(user2);
         fruit2.setFruitName("Fruit Name");
         fruit2.setFruitId(UUID.randomUUID());
-        assertSame(userFruitDTO, this.fruitService.editFruitByFruitId(fruitId, fruit2));
+        assertSame(fruitDTO, this.fruitService.editFruitByFruitId(fruitId, fruit2));
         verify(this.modelMappingService).convertModelToDTO(any(), any());
         verify(this.fruitRepository).findById(any());
         verify(this.fruitRepository).save(any());
@@ -257,13 +257,13 @@ public class FruitServiceTest {
 
     @Test
     public void testDeleteFruitByFruitId() {
-        UserFruitDTO userFruitDTO = new UserFruitDTO();
-        userFruitDTO.setUserId(UUID.randomUUID());
-        userFruitDTO.setUsername("janedoe");
-        userFruitDTO.setFruitName("Fruit Name");
-        userFruitDTO.setSurname("Doe");
-        userFruitDTO.setFruitId(UUID.randomUUID());
-        when(this.modelMappingService.convertModelToDTO(any(), any())).thenReturn(userFruitDTO);
+        FruitDTO fruitDTO = new FruitDTO();
+        fruitDTO.setUserId(UUID.randomUUID());
+        fruitDTO.setUsername("janedoe");
+        fruitDTO.setFruitName("Fruit Name");
+        fruitDTO.setSurname("Doe");
+        fruitDTO.setFruitId(UUID.randomUUID());
+        when(this.modelMappingService.convertModelToDTO(any(), any())).thenReturn(fruitDTO);
 
         User user = new User();
         user.setEmail("jane.doe@example.org");
@@ -280,7 +280,7 @@ public class FruitServiceTest {
         Optional<Fruit> ofResult = Optional.of(fruit);
         doNothing().when(this.fruitRepository).delete(any());
         when(this.fruitRepository.findById(any())).thenReturn(ofResult);
-        assertSame(userFruitDTO, this.fruitService.deleteFruitByFruitId(UUID.randomUUID()));
+        assertSame(fruitDTO, this.fruitService.deleteFruitByFruitId(UUID.randomUUID()));
         verify(this.modelMappingService).convertModelToDTO(any(), any());
         verify(this.fruitRepository).delete(any());
         verify(this.fruitRepository).findById(any());

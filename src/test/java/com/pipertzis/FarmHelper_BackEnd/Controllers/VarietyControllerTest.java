@@ -1,6 +1,6 @@
 package com.pipertzis.FarmHelper_BackEnd.Controllers;
 
-import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.VarietyFruitUserDTO;
+import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.VarietyDTO;
 import com.pipertzis.FarmHelper_BackEnd.Models.Variety;
 import com.pipertzis.FarmHelper_BackEnd.Services.VarietyService;
 import org.junit.jupiter.api.Test;
@@ -38,8 +38,8 @@ public class VarietyControllerTest {
 
     @Test
     public void testGetVarietyById() throws Exception {
-        VarietyFruitUserDTO varietyFruitUserDTO = new VarietyFruitUserDTO();
-        when(this.varietyService.getVarietyByVarietyId(any())).thenReturn(varietyFruitUserDTO);
+        VarietyDTO varietyDTO = new VarietyDTO();
+        when(this.varietyService.getVarietyByVarietyId(any())).thenReturn(varietyDTO);
 
         MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/variety/{varietyId}",UUID.randomUUID());
 
@@ -47,21 +47,21 @@ public class VarietyControllerTest {
                 .build()
                 .perform(getResult)
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(varietyFruitUserDTO)))
+                .andExpect(content().string(asJsonString(varietyDTO)))
                 .andDo(print());
         verify(this.varietyService).getVarietyByVarietyId(any());
     }
 
     @Test
     public void testGetAllVarietiesByFruitId() throws Exception {
-        VarietyFruitUserDTO varietyFruitUserDTO = new VarietyFruitUserDTO();
-        varietyFruitUserDTO.setVarietyId(UUID.randomUUID());
-        varietyFruitUserDTO.setFruitName("testFruitName");
-        varietyFruitUserDTO.setUsername("testUsername");
-        varietyFruitUserDTO.setVarietyName("testVarietyName");
+        VarietyDTO varietyDTO = new VarietyDTO();
+        varietyDTO.setVarietyId(UUID.randomUUID());
+        varietyDTO.setFruitName("testFruitName");
+        varietyDTO.setUsername("testUsername");
+        varietyDTO.setVarietyName("testVarietyName");
 
-        List<VarietyFruitUserDTO> list = new ArrayList<>();
-        list.add(varietyFruitUserDTO);
+        List<VarietyDTO> list = new ArrayList<>();
+        list.add(varietyDTO);
 
         when(this.varietyService.getAllVarietiesByFruitId(any())).thenReturn(list);
 
@@ -79,13 +79,13 @@ public class VarietyControllerTest {
 
     @Test
     public void testGetAllVarietiesByUserId() throws Exception {
-        VarietyFruitUserDTO varietyFruitUserDTO  = new VarietyFruitUserDTO();
-        varietyFruitUserDTO.setVarietyId(UUID.randomUUID());
-        varietyFruitUserDTO.setUsername("testUsername");
-        varietyFruitUserDTO.setVarietyName("testVarietyName");
-        varietyFruitUserDTO.setFruitName("testFruitName");
-        List<VarietyFruitUserDTO> list = new ArrayList<>();
-        list.add(varietyFruitUserDTO);
+        VarietyDTO varietyDTO = new VarietyDTO();
+        varietyDTO.setVarietyId(UUID.randomUUID());
+        varietyDTO.setUsername("testUsername");
+        varietyDTO.setVarietyName("testVarietyName");
+        varietyDTO.setFruitName("testFruitName");
+        List<VarietyDTO> list = new ArrayList<>();
+        list.add(varietyDTO);
 
         when(this.varietyService.getAllVarietiesByUserId(any())).thenReturn(list);
 
@@ -103,10 +103,10 @@ public class VarietyControllerTest {
     @Test
     public void testAddVarietyByFruitId() throws Exception {
         Variety variety = new Variety();
-        VarietyFruitUserDTO varietyFruitUserDTO = new VarietyFruitUserDTO();
-        varietyFruitUserDTO.setFruitName("testFruitName");
+        VarietyDTO varietyDTO = new VarietyDTO();
+        varietyDTO.setFruitName("testFruitName");
 
-        when(this.varietyService.addVarietyByFruitId(any(),any())).thenReturn(varietyFruitUserDTO);
+        when(this.varietyService.addVarietyByFruitId(any(),any())).thenReturn(varietyDTO);
 
         MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.post("/variety/add/{fruitId}",UUID.randomUUID())
                 .content(asJsonString(variety))
@@ -116,7 +116,7 @@ public class VarietyControllerTest {
                 .build()
                 .perform(getResult)
                 .andExpect(status().isOk())
-                .andExpect(content().json(asJsonString(varietyFruitUserDTO)))
+                .andExpect(content().json(asJsonString(varietyDTO)))
                 .andExpect(jsonPath("$.fruitName").value("testFruitName"))
                 .andDo(print());
         verify(this.varietyService).addVarietyByFruitId(any(),any());
@@ -125,9 +125,9 @@ public class VarietyControllerTest {
     @Test
     public void testEditVarietyNameById() throws Exception {
         Variety variety = new Variety();
-        VarietyFruitUserDTO varietyFruitUserDTO = new VarietyFruitUserDTO();
+        VarietyDTO varietyDTO = new VarietyDTO();
 
-        when(this.varietyService.editVarietyNameByVarietyId(any(),any())).thenReturn(varietyFruitUserDTO);
+        when(this.varietyService.editVarietyNameByVarietyId(any(),any())).thenReturn(varietyDTO);
 
         MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.put("/variety/edit/{varietyId}",UUID.randomUUID())
                                                                         .content(asJsonString(variety))
@@ -136,7 +136,7 @@ public class VarietyControllerTest {
                 .build()
                 .perform(getResult)
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(varietyFruitUserDTO)))
+                .andExpect(content().string(asJsonString(varietyDTO)))
                 .andDo(print());
 
         verify(this.varietyService).editVarietyNameByVarietyId(any(),any());
@@ -145,9 +145,9 @@ public class VarietyControllerTest {
 
     @Test
     public void testDeleteVarietyByVarietyId() throws Exception {
-        VarietyFruitUserDTO varietyFruitUserDTO = new VarietyFruitUserDTO();
+        VarietyDTO varietyDTO = new VarietyDTO();
 
-        when(this.varietyService.deleteVarietyByVarietyId(any())).thenReturn(varietyFruitUserDTO);
+        when(this.varietyService.deleteVarietyByVarietyId(any())).thenReturn(varietyDTO);
 
         MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.delete("/variety/delete/{varietyId}",UUID.randomUUID());
 
@@ -155,7 +155,7 @@ public class VarietyControllerTest {
                 .build()
                 .perform(getResult)
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(varietyFruitUserDTO)))
+                .andExpect(content().string(asJsonString(varietyDTO)))
                 .andDo(print());
 
         verify(this.varietyService).deleteVarietyByVarietyId(any());
