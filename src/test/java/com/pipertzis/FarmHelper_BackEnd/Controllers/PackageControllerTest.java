@@ -1,6 +1,6 @@
 package com.pipertzis.FarmHelper_BackEnd.Controllers;
 
-import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.PackageFruitUserDTO;
+import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.PackageDTO;
 import com.pipertzis.FarmHelper_BackEnd.Models.Package;
 import com.pipertzis.FarmHelper_BackEnd.Services.PackageService;
 import org.junit.jupiter.api.Test;
@@ -33,10 +33,10 @@ public class PackageControllerTest {
 
     @Test
     public void testGetAllPackages() throws Exception {
-        PackageFruitUserDTO packageFruitUserDTO = new PackageFruitUserDTO();
-        packageFruitUserDTO.setPackageName("testPackageName");
+        PackageDTO packageDTO = new PackageDTO();
+        packageDTO.setPackageName("testPackageName");
 
-        when(this.packageService.getAllPackages()).thenReturn(Collections.singletonList(packageFruitUserDTO));
+        when(this.packageService.getAllPackages()).thenReturn(Collections.singletonList(packageDTO));
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/package/all");
         MockMvcBuilders.standaloneSetup(this.packageController)
                 .build()
@@ -51,9 +51,9 @@ public class PackageControllerTest {
 
     @Test
     public void testGetAllPackagesByFruitId() throws Exception {
-        PackageFruitUserDTO packageFruitUserDTO = new PackageFruitUserDTO();
-        packageFruitUserDTO.setPackageName("testPackageName");
-        when(this.packageService.getAllPackagesByFruitId(any())).thenReturn(Collections.singletonList(packageFruitUserDTO));
+        PackageDTO packageDTO = new PackageDTO();
+        packageDTO.setPackageName("testPackageName");
+        when(this.packageService.getAllPackagesByFruitId(any())).thenReturn(Collections.singletonList(packageDTO));
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/package/fruit/{fruitId}",
                 UUID.randomUUID());
@@ -68,10 +68,10 @@ public class PackageControllerTest {
     @Test
     public void testAddPackageByFruitId() throws Exception {
         Package pack = new Package();
-        PackageFruitUserDTO packageFruitUserDTO = new PackageFruitUserDTO();
-        packageFruitUserDTO.setPackageName("testPackageName");
+        PackageDTO packageDTO = new PackageDTO();
+        packageDTO.setPackageName("testPackageName");
 
-        when(this.packageService.addPackageByFruitId(any(), any())).thenReturn(packageFruitUserDTO);
+        when(this.packageService.addPackageByFruitId(any(), any())).thenReturn(packageDTO);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/package/add/{fruitId}", UUID.randomUUID())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -81,17 +81,17 @@ public class PackageControllerTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(packageFruitUserDTO)));
+                .andExpect(content().string(asJsonString(packageDTO)));
         verify(this.packageService).addPackageByFruitId(any(),any());
     }
 
     @Test
     public void testEditPackageByPackageId() throws Exception {
         Package pack = new Package();
-        PackageFruitUserDTO packageFruitUserDTO = new PackageFruitUserDTO();
-        packageFruitUserDTO.setPackageName("testPackageName");
+        PackageDTO packageDTO = new PackageDTO();
+        packageDTO.setPackageName("testPackageName");
 
-        when(this.packageService.editPackageByPackageId(any(), any())).thenReturn(packageFruitUserDTO);
+        when(this.packageService.editPackageByPackageId(any(), any())).thenReturn(packageDTO);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .put("/package/edit/{packageId}", UUID.randomUUID())
@@ -101,7 +101,7 @@ public class PackageControllerTest {
                 .build()
                 .perform(requestBuilder)
                 .andExpect(status().isOk())
-                .andExpect(content().string(asJsonString(packageFruitUserDTO)));
+                .andExpect(content().string(asJsonString(packageDTO)));
         verify(this.packageService).editPackageByPackageId(any(),any());
     }
 }

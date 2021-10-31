@@ -1,7 +1,7 @@
 package com.pipertzis.FarmHelper_BackEnd.Services;
 
 import com.pipertzis.FarmHelper_BackEnd.Models.Fruit;
-import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.VarietyFruitUserDTO;
+import com.pipertzis.FarmHelper_BackEnd.Models.ModelDTO.VarietyDTO;
 import com.pipertzis.FarmHelper_BackEnd.Models.User;
 import com.pipertzis.FarmHelper_BackEnd.Models.Variety;
 import com.pipertzis.FarmHelper_BackEnd.Repositories.VarietyRepository;
@@ -74,7 +74,7 @@ public class VarietyServiceTest {
         varietyList.add(variety);
         when(this.varietyRepository.findByUser_userId((UUID) any())).thenReturn(varietyList);
         when(this.modelMappingService.convertModelToDTO((Object) any(), (Class<Object>) any()))
-                .thenReturn(new VarietyFruitUserDTO());
+                .thenReturn(new VarietyDTO());
         assertEquals(1, this.varietyService.getAllVarietiesByUserId(UUID.randomUUID()).size());
         verify(this.varietyRepository).findByUser_userId((UUID) any());
         verify(this.modelMappingService).convertModelToDTO((Object) any(), (Class<Object>) any());
@@ -120,7 +120,7 @@ public class VarietyServiceTest {
         varietyList.add(variety);
         when(this.varietyRepository.findByFruit_fruitId((UUID) any())).thenReturn(varietyList);
         when(this.modelMappingService.convertModelToDTO((Object) any(), (Class<Object>) any()))
-                .thenReturn(new VarietyFruitUserDTO());
+                .thenReturn(new VarietyDTO());
         assertEquals(1, this.varietyService.getAllVarietiesByFruitId(UUID.randomUUID()).size());
         verify(this.varietyRepository).findByFruit_fruitId((UUID) any());
         verify(this.modelMappingService).convertModelToDTO((Object) any(), (Class<Object>) any());
@@ -155,10 +155,10 @@ public class VarietyServiceTest {
         variety.setVarietyId(UUID.randomUUID());
         variety.setFruit(fruit);
         when(this.varietyRepository.getById((UUID) any())).thenReturn(variety);
-        VarietyFruitUserDTO varietyFruitUserDTO = new VarietyFruitUserDTO();
+        VarietyDTO varietyDTO = new VarietyDTO();
         when(this.modelMappingService.convertModelToDTO((Object) any(), (Class<Object>) any()))
-                .thenReturn(varietyFruitUserDTO);
-        assertSame(varietyFruitUserDTO, this.varietyService.getVarietyByVarietyId(UUID.randomUUID()));
+                .thenReturn(varietyDTO);
+        assertSame(varietyDTO, this.varietyService.getVarietyByVarietyId(UUID.randomUUID()));
         verify(this.varietyRepository).getById((UUID) any());
         verify(this.modelMappingService).convertModelToDTO((Object) any(), (Class<Object>) any());
     }
@@ -192,9 +192,9 @@ public class VarietyServiceTest {
         variety.setVarietyId(UUID.randomUUID());
         variety.setFruit(fruit);
         when(this.varietyRepository.save((Variety) any())).thenReturn(variety);
-        VarietyFruitUserDTO varietyFruitUserDTO = new VarietyFruitUserDTO();
+        VarietyDTO varietyDTO = new VarietyDTO();
         when(this.modelMappingService.convertModelToDTO((Object) any(), (Class<Object>) any()))
-                .thenReturn(varietyFruitUserDTO);
+                .thenReturn(varietyDTO);
 
         User user2 = new User();
         user2.setEmail("jane.doe@example.org");
@@ -237,7 +237,7 @@ public class VarietyServiceTest {
         variety1.setUser(user3);
         variety1.setVarietyId(UUID.randomUUID());
         variety1.setFruit(fruit2);
-        assertSame(varietyFruitUserDTO, this.varietyService.addVarietyByFruitId(fruitId, variety1));
+        assertSame(varietyDTO, this.varietyService.addVarietyByFruitId(fruitId, variety1));
         verify(this.varietyRepository).save((Variety) any());
         verify(this.modelMappingService).convertModelToDTO((Object) any(), (Class<Object>) any());
         verify(this.fruitService).fetchFruitById((UUID) any());
@@ -303,9 +303,9 @@ public class VarietyServiceTest {
         variety1.setFruit(fruit1);
         when(this.varietyRepository.save((Variety) any())).thenReturn(variety1);
         when(this.varietyRepository.findById((UUID) any())).thenReturn(ofResult);
-        VarietyFruitUserDTO varietyFruitUserDTO = new VarietyFruitUserDTO();
+        VarietyDTO varietyDTO = new VarietyDTO();
         when(this.modelMappingService.convertModelToDTO((Object) any(), (Class<Object>) any()))
-                .thenReturn(varietyFruitUserDTO);
+                .thenReturn(varietyDTO);
         UUID varietyId = UUID.randomUUID();
 
         User user4 = new User();
@@ -334,7 +334,7 @@ public class VarietyServiceTest {
         variety2.setUser(user4);
         variety2.setVarietyId(UUID.randomUUID());
         variety2.setFruit(fruit2);
-        assertSame(varietyFruitUserDTO, this.varietyService.editVarietyNameByVarietyId(varietyId, variety2));
+        assertSame(varietyDTO, this.varietyService.editVarietyNameByVarietyId(varietyId, variety2));
         verify(this.varietyRepository).findById((UUID) any());
         verify(this.varietyRepository).save((Variety) any());
         verify(this.modelMappingService).convertModelToDTO((Object) any(), (Class<Object>) any());
@@ -371,10 +371,10 @@ public class VarietyServiceTest {
         Optional<Variety> ofResult = Optional.<Variety>of(variety);
         doNothing().when(this.varietyRepository).delete((Variety) any());
         when(this.varietyRepository.findById((UUID) any())).thenReturn(ofResult);
-        VarietyFruitUserDTO varietyFruitUserDTO = new VarietyFruitUserDTO();
+        VarietyDTO varietyDTO = new VarietyDTO();
         when(this.modelMappingService.convertModelToDTO((Object) any(), (Class<Object>) any()))
-                .thenReturn(varietyFruitUserDTO);
-        assertSame(varietyFruitUserDTO, this.varietyService.deleteVarietyByVarietyId(UUID.randomUUID()));
+                .thenReturn(varietyDTO);
+        assertSame(varietyDTO, this.varietyService.deleteVarietyByVarietyId(UUID.randomUUID()));
         verify(this.varietyRepository).delete((Variety) any());
         verify(this.varietyRepository).findById((UUID) any());
         verify(this.modelMappingService).convertModelToDTO((Object) any(), (Class<Object>) any());

@@ -7,14 +7,14 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PackageFruitUserDTO {
+@Getter
+@Setter
+public class VarietyDTO {
 
-    private UUID packageId;
-    private String packageName;
+    private UUID varietyId;
+    private String varietyName;
     private String fruitName;
     private String username;
 }
