@@ -1,7 +1,7 @@
 version: '2.1'
 services:
   app:
-    image: 'farm_help:latest'
+    image: 'guardless/farm_help:latest'
     ports:
       - '8181:8181'
     container_name: cont_farm_help
